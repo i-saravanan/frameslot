@@ -162,10 +162,8 @@ Booking Confirmed
 > **Current Live URL**
 
 ```
-http://<YOUR-ELASTIC-IP>
+Available on request
 ```
-
-> Replace with your Elastic IP after allocation.
 
 ---
 
@@ -1119,11 +1117,11 @@ This project is licensed under the **MIT License**.
 
 Java Backend Developer
 
-📧 Email: your-email@example.com
+📧 Email: saravanan2004in@gmail.com
 
 🔗 LinkedIn
 
-https://www.linkedin.com/in/saravanan-i/
+https://www.linkedin.com/in/i-saravanan/
 
 💻 GitHub
 
@@ -1131,7 +1129,7 @@ https://github.com/i-saravanan
 
 🌐 Portfolio
 
-https://saravanan-i.vercel.app/
+https://isaravanan.vercel.app/
 
 ---
 
