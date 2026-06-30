@@ -2,822 +2,1143 @@
 
 # 📸 FrameSlot
 
-### *Photography & Videography Studio Booking Platform*
+### Photography & Videography Studio Booking Platform
 
-[![Java](https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/)
+A cloud-deployed Spring Boot REST API for managing photography and videography studio bookings with secure JWT authentication, role-based authorization, real-time booking management, and AWS deployment.
+
+<br>
+
+[![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3.5-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Spring Security](https://img.shields.io/badge/Spring_Security-JWT-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white)](https://spring.io/projects/spring-security)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
-[![JWT](https://img.shields.io/badge/JWT-Auth-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)](https://jwt.io/)
-[![AWS](https://img.shields.io/badge/AWS-EC2_+_RDS-FF9900?style=for-the-badge&logo=amazonwebservices&logoColor=white)](https://aws.amazon.com/)
+[![AWS](https://img.shields.io/badge/AWS-EC2_|_RDS_|_Nginx-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
----
+<br>
 
-**FrameSlot** connects photography & videography studios with customers through a seamless booking experience. Studio owners register their spaces, define session types, and manage bookings — while customers browse, check availability, and book sessions in real-time.
+**Spring Boot • Spring Security • JWT • Hibernate • MySQL • AWS EC2 • Amazon RDS • Nginx • Java 21**
 
-[🌐 Live API](#-live-deployment) · [📖 API Reference](#-api-reference) · [🚀 Quick Start](#-quick-start) · [🏗️ Architecture](#️-architecture)
+[🚀 Live Demo](#-live-deployment) •
+[📖 API Reference](#-api-reference) •
+[⚙️ Quick Start](#-quick-start) •
+[🏗️ Architecture](#️-deployment-architecture)
 
 </div>
 
 ---
 
-## ✨ Features
+# 📖 Overview
 
-<table>
-<tr>
-<td width="50%">
+FrameSlot is a **full-stack backend application** that enables customers to discover photography studios, view available session types, check real-time availability, and make online bookings.
 
-### 🔐 Authentication & Security
-- JWT-based stateless authentication
-- Role-based access control (ADMIN, OWNER, CUSTOMER)
-- BCrypt password hashing
-- Secure endpoint protection
+Studio owners can manage studios, working hours, blocked dates, bookings, and pricing, while administrators control platform approvals and monitor activity.
 
-</td>
-<td width="50%">
+The project follows a layered Spring Boot architecture using REST APIs, JWT authentication, Spring Security, Spring Data JPA, Hibernate, and MySQL.
 
-### 📅 Smart Booking Engine
+The application is deployed on **AWS EC2** with **Amazon RDS MySQL**, uses **Nginx** as a reverse proxy, and is managed by **systemd** for automatic startup and recovery.
+
+---
+
+# ✨ Key Features
+
+## 🔐 Authentication & Security
+
+- JWT Authentication
+- Stateless Security
+- Spring Security Filter Chain
+- BCrypt Password Encryption
+- Role-Based Access Control (RBAC)
+- Secure REST APIs
+- Custom Authentication Entry Point
+- Protected API Endpoints
+
+---
+
+## 👥 Multi-Role Access
+
+### 👤 Customer
+
+- Register & Login
+- Browse Studios
+- View Available Sessions
+- Check Slot Availability
+- Book Sessions
+- Cancel Bookings
+- View Booking History
+
+### 📷 Studio Owner
+
+- Register Studio
+- Update Studio Profile
+- Manage Session Types
+- Configure Working Hours
+- Block Dates
+- View Dashboard
+- Confirm Bookings
+- Cancel Bookings
+
+### 🛡️ Administrator
+
+- View All Studios
+- Approve Studios
+- Deactivate Studios
+- View Platform Bookings
+- Platform Management
+
+---
+
+# 🚀 Core Features
+
+### 📅 Smart Booking System
+
 - Real-time slot availability
-- Overlap conflict detection
-- Blocked date management
-- Max advance booking window
+- Booking conflict detection
+- Prevent overlapping bookings
+- Booking status management
+- Cancellation support
+- Advance booking limits
+- Booking history
 
-</td>
-</tr>
-<tr>
-<td width="50%">
+---
 
 ### 🏢 Studio Management
-- Studio registration & profile editing
-- Session types (Portrait, Wedding, Event, Product)
-- Working hours configuration
-- Owner dashboard with analytics
 
-</td>
-<td width="50%">
-
-### 👥 Multi-Role System
-- **Admin** — Approve/deactivate studios, view all bookings
-- **Owner** — Manage studio, confirm/cancel bookings
-- **Customer** — Browse studios, book & cancel sessions
-
-</td>
-</tr>
-</table>
+- Studio registration
+- Studio approval workflow
+- Working hours management
+- Blocked date management
+- Multiple session types
+- Pricing management
+- Owner dashboard
 
 ---
 
-## 🌐 Live Deployment
+### 🔔 Booking Workflow
 
-<table>
-<tr>
-<td>🖥️ <b>Server</b></td>
-<td>AWS EC2 (ap-south-1 Mumbai)</td>
-</tr>
-<tr>
-<td>🗄️ <b>Database</b></td>
-<td>AWS RDS MySQL 8.0</td>
-</tr>
-<tr>
-<td>🔗 <b>Base URL</b></td>
-<td><code>http://15.207.18.220</code></td>
-</tr>
-<tr>
-<td>🩺 <b>Health Check</b></td>
-<td><code>http://15.207.18.220/api/auth/login</code></td>
-</tr>
-</table>
-
-### Quick Test
-
-```bash
-# Login with admin credentials
-curl -X POST http://15.207.18.220/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email": "admin@frameslot.local", "password": "admin123"}'
+```
+Customer
+      │
+      ▼
+Browse Studios
+      │
+      ▼
+View Session Types
+      │
+      ▼
+Check Available Slots
+      │
+      ▼
+Book Session
+      │
+      ▼
+Booking Created
+      │
+      ▼
+Owner Confirms
+      │
+      ▼
+Booking Confirmed
 ```
 
 ---
 
-## 🏗️ Architecture
+# 🌐 Live Deployment
+
+| Service | Details |
+|---------|---------|
+| Cloud Provider | Amazon Web Services (AWS) |
+| Compute | Amazon EC2 |
+| Database | Amazon RDS MySQL 8 |
+| Reverse Proxy | Nginx |
+| Service Manager | systemd |
+| Java Runtime | Amazon Corretto 21 |
+| Build Tool | Maven |
+| Region | ap-south-1 (Mumbai) |
+| Deployment Type | Production |
+
+### Live API
+
+> **Current Live URL**
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        CLIENT                               │
-│              (Postman / Frontend / Mobile)                   │
-└──────────────────────┬──────────────────────────────────────┘
-                       │  HTTP + JWT Bearer Token
-                       ▼
-┌─────────────────────────────────────────────────────────────┐
-│                   AWS EC2 INSTANCE                          │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │              Spring Boot Application                  │  │
-│  │                                                       │  │
-│  │  ┌─────────┐   ┌──────────┐   ┌──────────────────┐   │  │
-│  │  │ Security │──▶│   JWT    │──▶│   Controllers    │   │  │
-│  │  │ Filter   │   │ Service  │   │ Auth│Admin│Owner │   │  │
-│  │  │ Chain    │   │          │   │     │     │Cust. │   │  │
-│  │  └─────────┘   └──────────┘   └────────┬─────────┘   │  │
-│  │                                         │             │  │
-│  │                              ┌──────────▼─────────┐   │  │
-│  │                              │     Services       │   │  │
-│  │                              │ Auth│Studio│Booking │   │  │
-│  │                              │     │Notif.│Current │   │  │
-│  │                              └──────────┬─────────┘   │  │
-│  │                                         │             │  │
-│  │                              ┌──────────▼─────────┐   │  │
-│  │                              │   JPA Repositories │   │  │
-│  │                              └──────────┬─────────┘   │  │
-│  └─────────────────────────────────────────┼─────────────┘  │
-└────────────────────────────────────────────┼────────────────┘
-                                             │ JDBC
-                                             ▼
-                                  ┌──────────────────┐
-                                  │   AWS RDS MySQL  │
-                                  │   (frameslot)    │
-                                  └──────────────────┘
+http://<YOUR-ELASTIC-IP>
+```
+
+> Replace with your Elastic IP after allocation.
+
+---
+
+# 🏗️ Deployment Architecture
+
+```
+                        Internet
+                            │
+                            │
+                     HTTP (Port 80)
+                            │
+                            ▼
+                ┌───────────────────────┐
+                │        Nginx          │
+                │   Reverse Proxy       │
+                └──────────┬────────────┘
+                           │
+                           │
+                    localhost:8080
+                           │
+                           ▼
+          ┌────────────────────────────────┐
+          │      Spring Boot Application   │
+          │                                │
+          │ Spring Security                │
+          │ JWT Authentication             │
+          │ REST Controllers               │
+          │ Service Layer                  │
+          │ Spring Data JPA                │
+          │ Hibernate                      │
+          └──────────────┬─────────────────┘
+                         │
+                         │ JDBC
+                         ▼
+            ┌──────────────────────────────┐
+            │      Amazon RDS MySQL        │
+            │                              │
+            │        FrameSlot DB          │
+            └──────────────────────────────┘
 ```
 
 ---
 
-## 🗃️ Database Schema
+# 🏛️ System Architecture
+
+```
+                 Client Applications
+        (Postman / Frontend / Mobile App)
+                    │
+                    ▼
+              REST API Requests
+                    │
+                    ▼
+          Spring Security Filter Chain
+                    │
+                    ▼
+           JWT Authentication Filter
+                    │
+                    ▼
+               REST Controllers
+                    │
+                    ▼
+             Business Services
+                    │
+                    ▼
+          Spring Data JPA Repository
+                    │
+                    ▼
+             Amazon RDS MySQL
+```
+
+---
+
+# 🛠️ Technology Stack
+
+| Category | Technology |
+|----------|------------|
+| Language | Java 21 |
+| Framework | Spring Boot 3.3.5 |
+| Security | Spring Security |
+| Authentication | JWT |
+| ORM | Hibernate |
+| Persistence | Spring Data JPA |
+| Database | MySQL 8 |
+| Build Tool | Maven |
+| Server | Apache Tomcat |
+| Cloud | AWS EC2 |
+| Database Hosting | Amazon RDS |
+| Reverse Proxy | Nginx |
+| Service Management | systemd |
+| API Style | REST |
+| IDE | IntelliJ IDEA |
+| Version Control | Git & GitHub |
+
+---
+
+# 📊 Project Highlights
+
+- ✅ Java 21
+- ✅ Spring Boot 3.3.5
+- ✅ Spring Security
+- ✅ JWT Authentication
+- ✅ Role-Based Authorization
+- ✅ RESTful API
+- ✅ Hibernate ORM
+- ✅ Spring Data JPA
+- ✅ Amazon RDS MySQL
+- ✅ AWS EC2 Deployment
+- ✅ Nginx Reverse Proxy
+- ✅ systemd Service
+- ✅ Production Deployment
+- ✅ Maven Build Automation
+- ✅ Layered Architecture
+- ✅ Clean Code Principles
+- ✅ Exception Handling
+- ✅ Validation
+- ✅ Secure Password Hashing
+
+---
+
+# 🗄️ Database Schema
+
+The application follows a relational database design with normalized tables to manage users, studios, bookings, session types, working hours, blocked dates, and notifications.
 
 ```mermaid
 erDiagram
-    USER ||--o{ STUDIO : owns
-    USER ||--o{ BOOKING : books
-    STUDIO ||--o{ SESSION_TYPE : offers
-    STUDIO ||--o{ WORKING_HOURS : has
-    STUDIO ||--o{ BLOCKED_DATE : blocks
-    STUDIO ||--o{ BOOKING : receives
-    SESSION_TYPE ||--o{ BOOKING : "booked as"
-    BOOKING ||--o{ NOTIFICATION : triggers
 
-    USER {
-        Long id PK
-        String name
-        String email UK
-        String password
-        String phone
-        Role role "ADMIN | OWNER | CUSTOMER"
-    }
+USER ||--o{ STUDIO : owns
+USER ||--o{ BOOKING : books
 
-    STUDIO {
-        Long id PK
-        Long owner_id FK
-        String name
-        String location
-        String bio
-        String instagramLink
-        StudioStatus status "PENDING | ACTIVE | INACTIVE"
-        Instant createdAt
-    }
+STUDIO ||--o{ SESSION_TYPE : offers
+STUDIO ||--o{ WORKING_HOURS : has
+STUDIO ||--o{ BLOCKED_DATE : blocks
+STUDIO ||--o{ BOOKING : receives
 
-    SESSION_TYPE {
-        Long id PK
-        Long studio_id FK
-        SessionName name "PORTRAIT | WEDDING | EVENT | PRODUCT"
-        Integer durationHours
-        BigDecimal price
-        Integer maxAdvanceDays
-        boolean active
-    }
+SESSION_TYPE ||--o{ BOOKING : booked_as
 
-    WORKING_HOURS {
-        Long id PK
-        Long studio_id FK
-        DayOfWeek dayOfWeek
-        LocalTime openTime
-        LocalTime closeTime
-    }
+BOOKING ||--o{ NOTIFICATION : creates
 
-    BLOCKED_DATE {
-        Long id PK
-        Long studio_id FK
-        LocalDate date
-        String reason
-    }
+USER {
+Long id PK
+String name
+String email
+String password
+String phone
+Role role
+}
 
-    BOOKING {
-        Long id PK
-        Long customer_id FK
-        Long studio_id FK
-        Long session_type_id FK
-        LocalDate bookingDate
-        LocalTime startTime
-        LocalTime endTime
-        String eventDetails
-        BookingStatus status "PENDING | CONFIRMED | CANCELLED"
-        String cancellationReason
-        Instant createdAt
-    }
+STUDIO {
+Long id PK
+Long ownerId FK
+String name
+String location
+String bio
+String instagramLink
+StudioStatus status
+}
 
-    NOTIFICATION {
-        Long id PK
-        Long booking_id FK
-        NotificationType type "CREATED | CONFIRMED | CANCELLED"
-        Instant sentAt
-    }
+SESSION_TYPE {
+Long id PK
+Long studioId FK
+SessionName name
+Integer durationHours
+BigDecimal price
+Integer maxAdvanceDays
+Boolean active
+}
+
+WORKING_HOURS {
+Long id PK
+Long studioId FK
+DayOfWeek dayOfWeek
+LocalTime openTime
+LocalTime closeTime
+}
+
+BLOCKED_DATE {
+Long id PK
+Long studioId FK
+LocalDate date
+String reason
+}
+
+BOOKING {
+Long id PK
+Long customerId FK
+Long studioId FK
+Long sessionTypeId FK
+LocalDate bookingDate
+LocalTime startTime
+LocalTime endTime
+BookingStatus status
+String cancellationReason
+}
+
+NOTIFICATION {
+Long id PK
+Long bookingId FK
+NotificationType type
+Instant sentAt
+}
 ```
 
 ---
 
-## 📖 API Reference
+# 🔐 Authentication Flow
 
-> **Base URL:** `http://15.207.18.220`
->
-> 🔓 = Public &nbsp;&nbsp; 🔐 = Requires JWT Token
+FrameSlot uses **JWT (JSON Web Token)** for authentication.
 
-### 🔑 Authentication
-
-| Method | Endpoint | Access | Description |
-|:------:|----------|:------:|-------------|
-| `POST` | `/api/auth/register` | 🔓 | Register a new user |
-| `POST` | `/api/auth/login` | 🔓 | Login & receive JWT token |
-
-<details>
-<summary><b>POST</b> <code>/api/auth/register</code> — Register a new account</summary>
-
-**Request Body:**
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "securepass123",
-  "phone": "9876543210",
-  "role": "CUSTOMER"
-}
 ```
-> `role` must be `CUSTOMER` or `OWNER` (cannot register as `ADMIN`)
+               Login Request
 
-**Response** `200 OK`:
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiJ9...",
-  "userId": 2,
-  "name": "John Doe",
-  "email": "john@example.com",
-  "role": "CUSTOMER"
-}
+      Email + Password
+             │
+             ▼
+      Authentication Manager
+             │
+             ▼
+      Validate Credentials
+             │
+             ▼
+        Generate JWT
+             │
+             ▼
+     Return JWT Token
+             │
+             ▼
+────────────────────────────────────
+
+Every Protected Request
+
+Bearer Token
+      │
+      ▼
+JWT Authentication Filter
+      │
+      ▼
+Validate Token
+      │
+      ▼
+Load User Details
+      │
+      ▼
+Spring Security Context
+      │
+      ▼
+Controller
 ```
-</details>
-
-<details>
-<summary><b>POST</b> <code>/api/auth/login</code> — Login with credentials</summary>
-
-**Request Body:**
-```json
-{
-  "email": "john@example.com",
-  "password": "securepass123"
-}
-```
-
-**Response** `200 OK`:
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiJ9...",
-  "userId": 2,
-  "name": "John Doe",
-  "email": "john@example.com",
-  "role": "CUSTOMER"
-}
-```
-</details>
 
 ---
 
-### 🏢 Studio Owner Endpoints
+# 🔑 User Roles
 
-> All endpoints require `Authorization: Bearer <token>` with **OWNER** role
+| Role | Permissions |
+|-------|-------------|
+| ADMIN | Approve studios, deactivate studios, manage platform |
+| OWNER | Manage studios, session types, bookings, working hours |
+| CUSTOMER | Browse studios, create bookings, cancel bookings |
+
+---
+
+# 📖 API Reference
+
+## Base URL
+
+```
+http://<YOUR-ELASTIC-IP>
+```
+
+---
+
+## Authentication APIs
+
+### Register
+
+```http
+POST /api/auth/register
+```
+
+Request
+
+```json
+{
+  "name":"John Doe",
+  "email":"john@example.com",
+  "password":"password123",
+  "phone":"9876543210",
+  "role":"CUSTOMER"
+}
+```
+
+Response
+
+```json
+{
+  "token":"JWT_TOKEN",
+  "userId":2,
+  "name":"John Doe",
+  "email":"john@example.com",
+  "role":"CUSTOMER"
+}
+```
+
+---
+
+### Login
+
+```http
+POST /api/auth/login
+```
+
+Request
+
+```json
+{
+  "email":"john@example.com",
+  "password":"password123"
+}
+```
+
+Response
+
+```json
+{
+  "token":"JWT_TOKEN",
+  "userId":2,
+  "name":"John Doe",
+  "email":"john@example.com",
+  "role":"CUSTOMER"
+}
+```
+
+---
+
+# 👤 Customer APIs
 
 | Method | Endpoint | Description |
-|:------:|----------|-------------|
-| `POST` | `/api/owner/studios` | Register a new studio |
-| `PUT` | `/api/owner/studios` | Update studio profile |
-| `POST` | `/api/owner/studios/session-types` | Add a session type |
-| `POST` | `/api/owner/studios/working-hours` | Set working hours |
-| `POST` | `/api/owner/studios/blocked-dates` | Block a date |
-| `GET` | `/api/owner/dashboard` | Owner dashboard (stats) |
-| `GET` | `/api/owner/bookings` | View all studio bookings |
-| `PUT` | `/api/owner/bookings/{id}/confirm` | Confirm a booking |
-| `PUT` | `/api/owner/bookings/{id}/cancel` | Cancel a booking |
-
-<details>
-<summary><b>POST</b> <code>/api/owner/studios</code> — Register a studio</summary>
-
-**Request Body:**
-```json
-{
-  "name": "Pixel Perfect Studio",
-  "location": "Chennai, India",
-  "bio": "Professional photography studio specializing in portraits and weddings",
-  "instagramLink": "https://instagram.com/pixelperfect"
-}
-```
-
-**Response** `200 OK`:
-```json
-{
-  "id": 1,
-  "ownerId": 2,
-  "name": "Pixel Perfect Studio",
-  "location": "Chennai, India",
-  "bio": "Professional photography studio...",
-  "instagramLink": "https://instagram.com/pixelperfect",
-  "status": "PENDING"
-}
-```
-</details>
-
-<details>
-<summary><b>POST</b> <code>/api/owner/studios/session-types</code> — Add session type</summary>
-
-**Request Body:**
-```json
-{
-  "name": "WEDDING",
-  "durationHours": 4,
-  "price": 25000.00,
-  "maxAdvanceDays": 90
-}
-```
-> `name` options: `PORTRAIT`, `WEDDING`, `EVENT`, `PRODUCT`
-</details>
-
-<details>
-<summary><b>POST</b> <code>/api/owner/studios/working-hours</code> — Set working hours</summary>
-
-**Request Body:**
-```json
-{
-  "dayOfWeek": "MONDAY",
-  "openTime": "09:00",
-  "closeTime": "18:00"
-}
-```
-</details>
-
-<details>
-<summary><b>POST</b> <code>/api/owner/studios/blocked-dates</code> — Block a date</summary>
-
-**Request Body:**
-```json
-{
-  "date": "2026-07-15",
-  "reason": "Studio maintenance"
-}
-```
-</details>
-
-<details>
-<summary><b>GET</b> <code>/api/owner/dashboard</code> — Owner dashboard</summary>
-
-**Response** `200 OK`:
-```json
-{
-  "today": 2,
-  "thisWeek": 8,
-  "thisMonth": 24,
-  "upcoming": [
-    {
-      "id": 1,
-      "studioId": 1,
-      "studioName": "Pixel Perfect Studio",
-      "customerId": 3,
-      "customerName": "Jane Smith",
-      "customerEmail": "jane@example.com",
-      "customerPhone": "9876543210",
-      "sessionTypeId": 1,
-      "sessionName": "WEDDING",
-      "bookingDate": "2026-07-10",
-      "startTime": "10:00",
-      "endTime": "14:00",
-      "eventDetails": "Wedding reception shoot",
-      "status": "PENDING",
-      "cancellationReason": null
-    }
-  ]
-}
-```
-</details>
-
-<details>
-<summary><b>PUT</b> <code>/api/owner/bookings/{id}/cancel</code> — Cancel a booking</summary>
-
-**Request Body** (optional):
-```json
-{
-  "reason": "Studio unavailable due to emergency"
-}
-```
-</details>
+|---------|----------|-------------|
+| GET | /api/customer/studios | Browse Studios |
+| GET | /api/customer/studios/{id}/sessions | View Session Types |
+| GET | /api/customer/studios/{studioId}/sessions/{sessionTypeId}/slots | Check Available Slots |
+| POST | /api/customer/bookings | Create Booking |
+| GET | /api/customer/bookings | View My Bookings |
+| PUT | /api/customer/bookings/{id}/cancel | Cancel Booking |
 
 ---
 
-### 👤 Customer Endpoints
+### Create Booking
 
-> Browse endpoints are 🔓 **public**. Booking endpoints require `Authorization: Bearer <token>` with **CUSTOMER** role.
-
-| Method | Endpoint | Access | Description |
-|:------:|----------|:------:|-------------|
-| `GET` | `/api/customer/studios` | 🔓 | Browse active studios |
-| `GET` | `/api/customer/studios/{id}/sessions` | 🔓 | View session types |
-| `GET` | `/api/customer/studios/{studioId}/sessions/{sessionTypeId}/slots?date=` | 🔓 | Check available slots |
-| `POST` | `/api/customer/bookings` | 🔐 | Create a booking |
-| `GET` | `/api/customer/bookings` | 🔐 | View my bookings |
-| `PUT` | `/api/customer/bookings/{id}/cancel` | 🔐 | Cancel my booking |
-
-<details>
-<summary><b>GET</b> <code>/api/customer/studios/{studioId}/sessions/{sessionTypeId}/slots?date=2026-07-10</code> — Available slots</summary>
-
-**Response** `200 OK`:
-```json
-{
-  "studioId": 1,
-  "sessionTypeId": 1,
-  "date": "2026-07-10",
-  "slots": [
-    { "startTime": "00:00", "endTime": "04:00" },
-    { "startTime": "04:00", "endTime": "08:00" },
-    { "startTime": "08:00", "endTime": "12:00" },
-    { "startTime": "16:00", "endTime": "20:00" }
-  ]
-}
-```
-</details>
-
-<details>
-<summary><b>POST</b> <code>/api/customer/bookings</code> — Create a booking</summary>
-
-**Request Body:**
-```json
-{
-  "studioId": 1,
-  "sessionTypeId": 1,
-  "bookingDate": "2026-07-10",
-  "startTime": "10:00",
-  "eventDetails": "Engagement photoshoot for 50 guests"
-}
+```http
+POST /api/customer/bookings
 ```
 
-**Response** `200 OK`:
 ```json
 {
-  "id": 1,
-  "studioId": 1,
-  "studioName": "Pixel Perfect Studio",
-  "customerId": 3,
-  "customerName": "Jane Smith",
-  "customerEmail": "jane@example.com",
-  "customerPhone": "9876543210",
-  "sessionTypeId": 1,
-  "sessionName": "WEDDING",
-  "bookingDate": "2026-07-10",
-  "startTime": "10:00",
-  "endTime": "14:00",
-  "eventDetails": "Engagement photoshoot for 50 guests",
-  "status": "PENDING",
-  "cancellationReason": null
+  "studioId":1,
+  "sessionTypeId":1,
+  "bookingDate":"2026-07-10",
+  "startTime":"10:00",
+  "eventDetails":"Wedding Photography"
 }
 ```
-</details>
 
 ---
 
-### 🛡️ Admin Endpoints
+# 📸 Studio Owner APIs
 
-> All endpoints require `Authorization: Bearer <token>` with **ADMIN** role
-
-| Method | Endpoint | Description |
-|:------:|----------|-------------|
-| `GET` | `/api/admin/studios` | View all studios |
-| `PUT` | `/api/admin/studios/{id}/approve` | Approve a pending studio |
-| `PUT` | `/api/admin/studios/{id}/deactivate` | Deactivate a studio |
-| `GET` | `/api/admin/bookings` | View all platform bookings |
+| Method | Endpoint |
+|---------|----------|
+| POST | /api/owner/studios |
+| PUT | /api/owner/studios |
+| POST | /api/owner/studios/session-types |
+| POST | /api/owner/studios/working-hours |
+| POST | /api/owner/studios/blocked-dates |
+| GET | /api/owner/dashboard |
+| GET | /api/owner/bookings |
+| PUT | /api/owner/bookings/{id}/confirm |
+| PUT | /api/owner/bookings/{id}/cancel |
 
 ---
 
-## 🔒 Authentication Guide
+### Register Studio
 
-### How JWT Works in FrameSlot
-
-```
-┌──────────┐         ┌──────────────┐         ┌──────────┐
-│  Client  │         │  FrameSlot   │         │  MySQL   │
-└────┬─────┘         └──────┬───────┘         └────┬─────┘
-     │  POST /auth/login    │                      │
-     │  {email, password}   │                      │
-     │─────────────────────▶│   validate creds     │
-     │                      │─────────────────────▶│
-     │                      │◀─────────────────────│
-     │   {token, userId,    │                      │
-     │    name, role}       │                      │
-     │◀─────────────────────│                      │
-     │                      │                      │
-     │  GET /api/owner/...  │                      │
-     │  Authorization:      │                      │
-     │  Bearer <token>      │   verify JWT         │
-     │─────────────────────▶│   extract role       │
-     │                      │   check permission   │
-     │   200 OK {data}      │                      │
-     │◀─────────────────────│                      │
-     │                      │                      │
-     │  No token / expired  │                      │
-     │─────────────────────▶│                      │
-     │   401 Unauthorized   │                      │
-     │◀─────────────────────│                      │
+```http
+POST /api/owner/studios
 ```
 
-### Using the Token
+```json
+{
+"name":"Pixel Perfect Studio",
+"location":"Chennai",
+"bio":"Professional Wedding Photography",
+"instagramLink":"https://instagram.com/pixelperfect"
+}
+```
 
-**In Postman:**
-1. Go to the **Authorization** tab
-2. Select **Bearer Token**
-3. Paste the `token` from the login response
+---
 
-**In curl:**
+### Add Session Type
+
+```http
+POST /api/owner/studios/session-types
+```
+
+```json
+{
+"name":"WEDDING",
+"durationHours":4,
+"price":25000,
+"maxAdvanceDays":90
+}
+```
+
+---
+
+### Add Working Hours
+
+```http
+POST /api/owner/studios/working-hours
+```
+
+```json
+{
+"dayOfWeek":"MONDAY",
+"openTime":"09:00",
+"closeTime":"18:00"
+}
+```
+
+---
+
+### Block Date
+
+```http
+POST /api/owner/studios/blocked-dates
+```
+
+```json
+{
+"date":"2026-08-15",
+"reason":"Maintenance"
+}
+```
+
+---
+
+# 🛡️ Admin APIs
+
+| Method | Endpoint |
+|---------|----------|
+| GET | /api/admin/studios |
+| PUT | /api/admin/studios/{id}/approve |
+| PUT | /api/admin/studios/{id}/deactivate |
+| GET | /api/admin/bookings |
+
+---
+
+# 📋 Booking Rules
+
+- Only ACTIVE studios are visible to customers.
+- Session types must be active.
+- Booking overlaps are automatically prevented.
+- Customers cannot exceed the maximum advance booking period.
+- Blocked dates cannot be booked.
+- Booking lifecycle:
+
+```
+PENDING
+    │
+    ├──────────────► CONFIRMED
+    │
+    └──────────────► CANCELLED
+```
+
+---
+
+# 🔒 JWT Authentication
+
+Every protected endpoint requires:
+
+```
+Authorization: Bearer <JWT_TOKEN>
+```
+
+Example
+
 ```bash
-curl http://15.207.18.220/api/owner/dashboard \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9..."
+curl http://<YOUR-ELASTIC-IP>/api/owner/dashboard \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9..."
 ```
 
-### Error Responses
+---
 
-| Status | Meaning | Example |
-|:------:|---------|---------|
-| `401` | Missing or invalid token | `{"error": "Unauthorized", "message": "You must provide a valid JWT token"}` |
-| `403` | Insufficient permissions | `{"error": "Access denied", "message": "You don't have permission"}` |
+# ❌ Common HTTP Responses
+
+| Status | Description |
+|---------|-------------|
+| 200 | Success |
+| 201 | Created |
+| 400 | Bad Request |
+| 401 | Unauthorized |
+| 403 | Forbidden |
+| 404 | Resource Not Found |
+| 500 | Internal Server Error |
 
 ---
 
-## 📋 Booking Rules
+# 📁 Project Structure
 
-| Rule | Description |
-|------|-------------|
-| **Overlap Prevention** | No two bookings can overlap in time for the same studio |
-| **Blocked Dates** | Studios can block specific dates — no bookings allowed |
-| **Advance Window** | Each session type defines a `maxAdvanceDays` limit |
-| **Status Flow** | `PENDING` → `CONFIRMED` or `CANCELLED` |
-| **Cancellation** | Both customers and owners can cancel with an optional reason |
-| **Working Hours** | Informational only — displayed to customers but don't restrict bookings |
+```
+src
+├── main
+│
+├── java
+│   └── com.frameslot
+│
+│       ├── config
+│       ├── controller
+│       ├── domain
+│       ├── repository
+│       ├── service
+│       ├── security
+│       ├── dto
+│       ├── mapper
+│       ├── exception
+│       └── FrameSlotApplication.java
+│
+├── resources
+│
+│   ├── application.properties
+│   ├── application-prod.properties
+│   └── data.sql
+│
+└── pom.xml
+```
 
 ---
 
-## 🚀 Quick Start
+# 📦 Maven Dependencies
 
-### Prerequisites
+Major libraries used:
 
-- **Java 17+** — [Download](https://adoptium.net/)
-- **Maven 3.8+** — [Download](https://maven.apache.org/)
-- **MySQL 8.0+** — [Download](https://dev.mysql.com/downloads/)
+- Spring Boot 3.3.5
+- Spring Security
+- Spring Data JPA
+- Hibernate
+- MySQL Connector
+- JJWT
+- Lombok
+- Jakarta Validation
+- Maven
 
-### 1. Clone & Configure
+# 🚀 Quick Start
+
+## Prerequisites
+
+Before running the project, make sure you have:
+
+- Java 21 (Amazon Corretto / OpenJDK)
+- Maven 3.9+
+- MySQL 8.0+
+- Git
+- IntelliJ IDEA (Recommended)
+
+---
+
+# 📥 Clone Repository
 
 ```bash
 git clone https://github.com/i-saravanan/frameslot.git
+
 cd frameslot
 ```
 
-### 2. Set Environment Variables
+---
+
+# ⚙️ Configure Environment
+
+Update `application.properties`
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/frameslot
+
+spring.datasource.username=root
+
+spring.datasource.password=your_password
+
+jwt.secret=YOUR_SECRET_KEY
+```
+
+or configure environment variables
 
 ```bash
-# Required
-export DB_URL="jdbc:mysql://localhost:3306/frameslot?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Kolkata"
-export DB_USERNAME="root"
-export DB_PASSWORD="your_password"
-
-# Recommended for production
-export JWT_SECRET="your-base64-encoded-256-bit-secret"
-export ADMIN_PASSWORD="strong-admin-password"
+DB_URL=
+DB_USERNAME=
+DB_PASSWORD=
+JWT_SECRET=
+ADMIN_PASSWORD=
 ```
 
-<details>
-<summary>💻 <b>PowerShell (Windows)</b></summary>
+---
 
-```powershell
-$env:DB_URL="jdbc:mysql://localhost:3306/frameslot?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Kolkata"
-$env:DB_USERNAME="root"
-$env:DB_PASSWORD="your_password"
-$env:JWT_SECRET="your-base64-encoded-256-bit-secret"
-$env:ADMIN_PASSWORD="strong-admin-password"
-```
-</details>
+# ▶️ Run Application
 
-### 3. Run
+Using Maven
 
 ```bash
 mvn spring-boot:run
 ```
 
-The API will be available at `http://localhost:8080`
-
-### 4. Default Admin
-
-| Field | Value |
-|-------|-------|
-| Email | `admin@frameslot.local` |
-| Password | `admin123` (or `ADMIN_PASSWORD` env var) |
-
----
-
-## 🧪 Testing the Complete Flow
-
-Here's a step-by-step walkthrough to test all features:
+or
 
 ```bash
-BASE=http://15.207.18.220
+mvn clean package
 
-# ① Register a studio owner
-curl -s -X POST $BASE/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Raj Kumar","email":"raj@studio.com","password":"pass123","phone":"9000000001","role":"OWNER"}'
-# → Save the "token" as OWNER_TOKEN
+java -jar target/frameslot-0.0.1-SNAPSHOT.jar
+```
 
-# ② Register a customer
-curl -s -X POST $BASE/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Priya S","email":"priya@mail.com","password":"pass123","phone":"9000000002","role":"CUSTOMER"}'
-# → Save the "token" as CUST_TOKEN
+Application runs at
 
-# ③ Owner registers a studio
-curl -s -X POST $BASE/api/owner/studios \
-  -H "Authorization: Bearer $OWNER_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Golden Frame Studio","location":"Chennai","bio":"Premium wedding photography","instagramLink":"https://instagram.com/goldenframe"}'
-
-# ④ Admin approves the studio
-curl -s -X POST $BASE/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"admin@frameslot.local","password":"admin123"}'
-# → Save the "token" as ADMIN_TOKEN
-
-curl -s -X PUT $BASE/api/admin/studios/1/approve \
-  -H "Authorization: Bearer $ADMIN_TOKEN"
-
-# ⑤ Owner adds a session type
-curl -s -X POST $BASE/api/owner/studios/session-types \
-  -H "Authorization: Bearer $OWNER_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"name":"WEDDING","durationHours":4,"price":25000.00,"maxAdvanceDays":90}'
-
-# ⑥ Customer checks available slots
-curl -s "$BASE/api/customer/studios/1/sessions/1/slots?date=2026-07-15"
-
-# ⑦ Customer books a slot
-curl -s -X POST $BASE/api/customer/bookings \
-  -H "Authorization: Bearer $CUST_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"studioId":1,"sessionTypeId":1,"bookingDate":"2026-07-15","startTime":"10:00","eventDetails":"Wedding reception shoot"}'
-
-# ⑧ Owner confirms the booking
-curl -s -X PUT $BASE/api/owner/bookings/1/confirm \
-  -H "Authorization: Bearer $OWNER_TOKEN"
+```
+http://localhost:8080
 ```
 
 ---
 
-## 🛠️ Tech Stack
+# ☁️ AWS Deployment
 
-| Layer | Technology |
-|-------|-----------|
-| **Language** | Java 17 |
-| **Framework** | Spring Boot 3.3.5 |
-| **Security** | Spring Security + JWT (JJWT 0.12.6) |
-| **Database** | MySQL 8.0 (AWS RDS) |
-| **ORM** | Spring Data JPA / Hibernate |
-| **Validation** | Jakarta Bean Validation |
-| **Build** | Maven |
-| **Deployment** | AWS EC2 (ap-south-1) |
+FrameSlot is deployed completely on AWS.
+
+## Infrastructure
+
+| Service | Configuration |
+|----------|---------------|
+| Compute | Amazon EC2 |
+| Operating System | Amazon Linux 2023 |
+| Java Runtime | Amazon Corretto 21 |
+| Reverse Proxy | Nginx |
+| Database | Amazon RDS MySQL 8 |
+| Region | ap-south-1 (Mumbai) |
+| Service Manager | systemd |
 
 ---
 
-## 📂 Project Structure
+## Production Architecture
 
 ```
-src/main/java/com/frameslot/
-├── FrameSlotApplication.java          # Application entry point
-│
-├── config/                            # Configuration & Security
-│   ├── SecurityConfig.java            # URL rules, JWT filter registration
-│   ├── JwtService.java                # Token generation & validation
-│   ├── JwtAuthenticationFilter.java   # Per-request JWT validation
-│   ├── JwtAuthenticationEntryPoint.java # JSON 401 responses
-│   ├── CustomUserDetailsService.java  # Spring UserDetailsService
-│   └── DataSeeder.java               # Auto-creates admin user
-│
-├── domain/                            # JPA Entities & Enums
-│   ├── User.java                      # User entity (ADMIN, OWNER, CUSTOMER)
-│   ├── Studio.java                    # Photography studio
-│   ├── SessionType.java              # Session offerings (Wedding, Portrait...)
-│   ├── Booking.java                   # Booking with status lifecycle
-│   ├── WorkingHours.java             # Studio operating hours
-│   ├── BlockedDate.java              # Dates studio is unavailable
-│   ├── Notification.java            # Booking event notifications
-│   ├── Role.java                     # OWNER, CUSTOMER, ADMIN
-│   ├── BookingStatus.java            # PENDING, CONFIRMED, CANCELLED
-│   ├── StudioStatus.java            # PENDING, ACTIVE, INACTIVE
-│   ├── SessionName.java             # PORTRAIT, WEDDING, EVENT, PRODUCT
-│   └── NotificationType.java        # BOOKING_CREATED, CONFIRMED, CANCELLED
-│
-├── repository/                        # Spring Data JPA Repositories
-│   ├── UserRepository.java
-│   ├── StudioRepository.java
-│   ├── SessionTypeRepository.java
-│   ├── BookingRepository.java
-│   ├── WorkingHoursRepository.java
-│   ├── BlockedDateRepository.java
-│   └── NotificationRepository.java
-│
-├── service/                           # Business Logic
-│   ├── AuthService.java              # Login, Register + JWT generation
-│   ├── StudioService.java            # Studio CRUD, slots, dashboard
-│   ├── BookingService.java           # Booking lifecycle management
-│   ├── CurrentUserService.java       # JWT → User resolution
-│   ├── NotificationService.java      # Booking event tracking
-│   └── StudioMapper.java            # Entity → Response mapping
-│
-└── web/                               # REST Controllers & DTOs
-    ├── AuthController.java            # /api/auth/*
-    ├── AdminController.java           # /api/admin/*
-    ├── StudioOwnerController.java     # /api/owner/*
-    ├── CustomerController.java        # /api/customer/*
-    ├── ApiErrorHandler.java           # Global exception handling
-    ├── ApiException.java              # Custom exception class
-    └── dto/
-        ├── AuthDtos.java              # Login, Register, AuthResponse
-        ├── BookingDtos.java           # CreateBookingRequest
-        └── StudioDtos.java            # Studio, Session, Booking DTOs
+                    Internet
+                        │
+                        ▼
+               AWS Security Group
+                        │
+                        ▼
+                 HTTP (Port 80)
+                        │
+                        ▼
+                     Nginx
+                        │
+                        ▼
+              Spring Boot Application
+                 Port 8080
+                        │
+                        ▼
+                 Amazon RDS MySQL
 ```
 
 ---
 
-## 🌍 Deployment (AWS)
-
-FrameSlot is deployed on **AWS** with the following infrastructure:
-
-```
-                    ┌───────────────────┐
-                    │   Internet        │
-                    └────────┬──────────┘
-                             │
-                    ┌────────▼──────────┐
-                    │  Security Group   │
-                    │  Port 80, 8080    │
-                    └────────┬──────────┘
-                             │
-                    ┌────────▼──────────┐
-                    │    AWS EC2        │
-                    │  t2.micro         │
-                    │  ap-south-1       │
-                    │                   │
-                    │  Java 17 + JAR    │
-                    └────────┬──────────┘
-                             │ JDBC (Port 3306)
-                    ┌────────▼──────────┐
-                    │    AWS RDS        │
-                    │  MySQL 8.0        │
-                    │  db.t3.micro      │
-                    └───────────────────┘
-```
-
-### Build & Deploy
+## Build
 
 ```bash
-# Build the JAR
 mvn clean package -DskipTests
-
-# Copy to EC2
-scp target/frameslot-0.0.1-SNAPSHOT.jar ec2-user@15.207.18.220:~/
-
-# SSH and run
-ssh ec2-user@15.207.18.220
-nohup java -jar frameslot-0.0.1-SNAPSHOT.jar \
-  --DB_URL="jdbc:mysql://<rds-endpoint>:3306/frameslot" \
-  --DB_USERNAME="admin" \
-  --DB_PASSWORD="<rds-password>" \
-  --JWT_SECRET="<production-secret>" \
-  --ADMIN_PASSWORD="<strong-password>" &
 ```
 
 ---
 
-## 📝 Environment Variables
+## Upload to EC2
 
-| Variable | Required | Default | Description |
-|----------|:--------:|---------|-------------|
-| `DB_URL` | Yes | `jdbc:mysql://localhost:3306/frameslot` | MySQL connection URL |
-| `DB_USERNAME` | Yes | `root` | Database username |
-| `DB_PASSWORD` | Yes | — | Database password |
-| `JWT_SECRET` | Recommended | (built-in dev key) | Base64-encoded HMAC-SHA256 key |
-| `ADMIN_PASSWORD` | Recommended | `admin123` | Admin account password |
+```bash
+scp target/frameslot-0.0.1-SNAPSHOT.jar \
+ec2-user@<EC2-IP>:~
+```
+
+---
+
+## Deploy
+
+Move jar
+
+```bash
+sudo mv ~/frameslot-0.0.1-SNAPSHOT.jar /opt/frameslot/
+```
+
+Restart service
+
+```bash
+sudo systemctl restart frameslot
+```
+
+Check status
+
+```bash
+sudo systemctl status frameslot
+```
+
+View logs
+
+```bash
+sudo journalctl -u frameslot -f
+```
+
+---
+
+# 🌐 Nginx Reverse Proxy
+
+Nginx forwards all requests to the Spring Boot application.
+
+```
+Internet
+
+↓
+
+Nginx (80)
+
+↓
+
+Spring Boot (8080)
+```
+
+Benefits
+
+- Reverse Proxy
+- Better Security
+- Hide Internal Port
+- Production Ready
+- Easy HTTPS Integration
+
+---
+
+# 🔄 systemd Service
+
+FrameSlot runs as a Linux service.
+
+Useful commands
+
+```bash
+sudo systemctl start frameslot
+
+sudo systemctl stop frameslot
+
+sudo systemctl restart frameslot
+
+sudo systemctl status frameslot
+
+sudo journalctl -u frameslot -f
+```
+
+---
+
+# 🔒 Security Features
+
+- JWT Authentication
+- BCrypt Password Hashing
+- Spring Security
+- Stateless Authentication
+- Role Based Authorization
+- Input Validation
+- Exception Handling
+- Secure Password Storage
+
+---
+
+# 📈 Future Improvements
+
+Planned features
+
+- Email Verification
+- Forgot Password
+- Refresh Tokens
+- Payment Integration
+- Studio Reviews
+- Image Upload
+- Swagger/OpenAPI
+- Docker
+- Kubernetes
+- Redis Cache
+- CI/CD Pipeline
+- HTTPS with Let's Encrypt
+- Custom Domain
+- Monitoring with CloudWatch
+
+---
+
+# 🚀 CI/CD (Planned)
+
+GitHub Actions pipeline
+
+```
+Developer
+
+↓
+
+Git Push
+
+↓
+
+GitHub Actions
+
+↓
+
+Build
+
+↓
+
+Run Tests
+
+↓
+
+Create Jar
+
+↓
+
+Deploy to EC2
+
+↓
+
+Restart systemd Service
+```
+
+---
+
+# 📷 Screenshots
+
+Add screenshots here
+
+```
+docs/
+
+├── login.png
+
+├── register.png
+
+├── owner-dashboard.png
+
+├── customer-booking.png
+
+├── admin-panel.png
+
+├── postman.png
+
+├── ec2.png
+
+├── rds.png
+
+└── architecture.png
+```
+
+---
+
+# 📊 Project Statistics
+
+| Metric | Count |
+|----------|---------|
+| Java Version | 21 |
+| REST APIs | 20+ |
+| Database Tables | 7 |
+| User Roles | 3 |
+| Booking Workflow | Complete |
+| Authentication | JWT |
+| Deployment | AWS |
+| Database | Amazon RDS |
+| Reverse Proxy | Nginx |
+| Service Manager | systemd |
+
+---
+
+# 🎯 Learning Outcomes
+
+This project demonstrates practical experience with
+
+- Java Backend Development
+- Spring Boot
+- Spring Security
+- JWT Authentication
+- Hibernate
+- Spring Data JPA
+- REST API Design
+- MySQL Database Design
+- AWS EC2
+- Amazon RDS
+- Linux Server Administration
+- Nginx Configuration
+- systemd Services
+- Maven Build Automation
+- Git & GitHub
+- Production Deployment
+
+---
+
+# 💼 Resume Highlights
+
+**FrameSlot – Photography & Videography Studio Booking Platform**
+
+- Developed a cloud-deployed backend application using Java 21 and Spring Boot.
+- Designed secure REST APIs with JWT authentication and Spring Security.
+- Implemented role-based authorization for Admin, Studio Owner, and Customer.
+- Built a booking engine with availability checking and conflict prevention.
+- Integrated Spring Data JPA and Hibernate with Amazon RDS MySQL.
+- Deployed the application on AWS EC2 with Nginx reverse proxy and systemd service management.
+- Configured Linux server, networking, security groups, and cloud database connectivity.
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+1. Fork the repository
+
+2. Create a feature branch
+
+```bash
+git checkout -b feature-name
+```
+
+3. Commit
+
+```bash
+git commit -m "Added new feature"
+```
+
+4. Push
+
+```bash
+git push origin feature-name
+```
+
+5. Open a Pull Request
+
+---
+
+# 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+# 👨‍💻 Author
+
+**Saravanan I**
+
+Java Backend Developer
+
+📧 Email: your-email@example.com
+
+🔗 LinkedIn
+
+https://www.linkedin.com/in/saravanan-i/
+
+💻 GitHub
+
+https://github.com/i-saravanan
+
+🌐 Portfolio
+
+https://saravanan-i.vercel.app/
 
 ---
 
 <div align="center">
 
-### Built with ❤️ using Spring Boot
+## ⭐ If you found this project useful, please consider giving it a Star.
 
-**[⬆ Back to Top](#-frameslot)**
+Made with ❤️ by **Saravanan I**
 
 </div>
